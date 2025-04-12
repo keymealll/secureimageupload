@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Secure Image Storage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="jumbotron mt-4">
+        <h1 class="display-4">Welcome to Secure Image Storage</h1>
+        <p class="lead">Safely upload, store, and manage your images with top-tier encryption and security.</p>
+        <hr class="my-4">
+        <p>Our platform ensures that your valuable images are protected with industry-standard encryption, secure access controls, and comprehensive protection against common web vulnerabilities.</p>
+        
+        {% if user.is_authenticated %}
+        <div class="mt-4">
+            <a href="{% url 'gallery' %}" class="btn btn-primary btn-lg mr-2">View My Gallery</a>
+            <a href="{% url 'upload_image' %}" class="btn btn-success btn-lg">Upload Image</a>
+        </div>
+        {% else %}
+        <div class="mt-4">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mr-2">Log In</a>
+            <a href="{% url 'register' %}" class="btn btn-success btn-lg">Register</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

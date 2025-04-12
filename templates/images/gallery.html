@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Image Gallery{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>My Images</h1>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="gallery-actions my-4">
+        <a href="{% url 'upload_image' %}" class="btn btn-primary">Upload New Image</a>
+    </div>
+
+    {% if images %}
+    <div class="row">
+        {% for image in images %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ image.title }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">Uploaded: {{ image.upload_date|date:"F j, Y" }}</small>
+                    </p>
+                    {% if image.description %}
+                    <p class="card-text">{{ image.description|truncatechars:100 }}</p>
+                    {% endif %}
+                    <div class="btn-group">
+                        <a href="{% url 'view_image' image.id %}" class="btn btn-sm btn-info">View</a>
+                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                            data-target="#deleteModal{{ image.id }}">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal{{ image.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete "{{ image.title }}"? This action cannot be undone.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <form action="{% url 'delete_image' image.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info mt-4">
+        You haven't uploaded any images yet. Click "Upload New Image" to get started.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

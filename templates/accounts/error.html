@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="error-container">
+        <h1 class="display-1">{{ error_code }}</h1>
+        <h2>{{ title }}</h2>
+        <p class="lead">{{ message }}</p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Return to Home</a>
+    </div>
+</div>
+{% endblock %}
